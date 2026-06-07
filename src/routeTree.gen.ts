@@ -9,38 +9,141 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TeachersRouteImport } from './routes/teachers'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CentersRouteImport } from './routes/centers'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardTeacherRouteImport } from './routes/dashboard.teacher'
+import { Route as DashboardStudentRouteImport } from './routes/dashboard.student'
+import { Route as DashboardCenterRouteImport } from './routes/dashboard.center'
 
+const TeachersRoute = TeachersRouteImport.update({
+  id: '/teachers',
+  path: '/teachers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CentersRoute = CentersRouteImport.update({
+  id: '/centers',
+  path: '/centers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardTeacherRoute = DashboardTeacherRouteImport.update({
+  id: '/dashboard/teacher',
+  path: '/dashboard/teacher',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardStudentRoute = DashboardStudentRouteImport.update({
+  id: '/dashboard/student',
+  path: '/dashboard/student',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardCenterRoute = DashboardCenterRouteImport.update({
+  id: '/dashboard/center',
+  path: '/dashboard/center',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/centers': typeof CentersRoute
+  '/checkout': typeof CheckoutRoute
+  '/teachers': typeof TeachersRoute
+  '/dashboard/center': typeof DashboardCenterRoute
+  '/dashboard/student': typeof DashboardStudentRoute
+  '/dashboard/teacher': typeof DashboardTeacherRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/centers': typeof CentersRoute
+  '/checkout': typeof CheckoutRoute
+  '/teachers': typeof TeachersRoute
+  '/dashboard/center': typeof DashboardCenterRoute
+  '/dashboard/student': typeof DashboardStudentRoute
+  '/dashboard/teacher': typeof DashboardTeacherRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/centers': typeof CentersRoute
+  '/checkout': typeof CheckoutRoute
+  '/teachers': typeof TeachersRoute
+  '/dashboard/center': typeof DashboardCenterRoute
+  '/dashboard/student': typeof DashboardStudentRoute
+  '/dashboard/teacher': typeof DashboardTeacherRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/centers'
+    | '/checkout'
+    | '/teachers'
+    | '/dashboard/center'
+    | '/dashboard/student'
+    | '/dashboard/teacher'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/centers'
+    | '/checkout'
+    | '/teachers'
+    | '/dashboard/center'
+    | '/dashboard/student'
+    | '/dashboard/teacher'
+  id:
+    | '__root__'
+    | '/'
+    | '/centers'
+    | '/checkout'
+    | '/teachers'
+    | '/dashboard/center'
+    | '/dashboard/student'
+    | '/dashboard/teacher'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CentersRoute: typeof CentersRoute
+  CheckoutRoute: typeof CheckoutRoute
+  TeachersRoute: typeof TeachersRoute
+  DashboardCenterRoute: typeof DashboardCenterRoute
+  DashboardStudentRoute: typeof DashboardStudentRoute
+  DashboardTeacherRoute: typeof DashboardTeacherRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/teachers': {
+      id: '/teachers'
+      path: '/teachers'
+      fullPath: '/teachers'
+      preLoaderRoute: typeof TeachersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/centers': {
+      id: '/centers'
+      path: '/centers'
+      fullPath: '/centers'
+      preLoaderRoute: typeof CentersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +151,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/teacher': {
+      id: '/dashboard/teacher'
+      path: '/dashboard/teacher'
+      fullPath: '/dashboard/teacher'
+      preLoaderRoute: typeof DashboardTeacherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/student': {
+      id: '/dashboard/student'
+      path: '/dashboard/student'
+      fullPath: '/dashboard/student'
+      preLoaderRoute: typeof DashboardStudentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/center': {
+      id: '/dashboard/center'
+      path: '/dashboard/center'
+      fullPath: '/dashboard/center'
+      preLoaderRoute: typeof DashboardCenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CentersRoute: CentersRoute,
+  CheckoutRoute: CheckoutRoute,
+  TeachersRoute: TeachersRoute,
+  DashboardCenterRoute: DashboardCenterRoute,
+  DashboardStudentRoute: DashboardStudentRoute,
+  DashboardTeacherRoute: DashboardTeacherRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
