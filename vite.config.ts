@@ -12,9 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Custom Vite configurations go inside this 'vite' object block
+    base: '/', 
+  }
 });
-export default defineConfig({
-  // If this is set to something else, it might break root routing on Vercel
-  base: '/', 
-  plugins: [react()], // or vue(), etc.
-})
