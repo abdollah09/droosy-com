@@ -13,3 +13,8 @@ export default defineConfig({
     server: { entry: "server" },
   },
 });
+export default defineConfig({
+  // If this is set to something else, it might break root routing on Vercel
+  base: '/', 
+  plugins: [react()], // or vue(), etc.
+})
