@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TeachersRouteImport } from './routes/teachers'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CentersRouteImport } from './routes/centers'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,6 +21,11 @@ import { Route as DashboardCenterRouteImport } from './routes/dashboard.center'
 const TeachersRoute = TeachersRouteImport.update({
   id: '/teachers',
   path: '/teachers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/centers': typeof CentersRoute
   '/checkout': typeof CheckoutRoute
+  '/login': typeof LoginRoute
   '/teachers': typeof TeachersRoute
   '/dashboard/center': typeof DashboardCenterRoute
   '/dashboard/student': typeof DashboardStudentRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/centers': typeof CentersRoute
   '/checkout': typeof CheckoutRoute
+  '/login': typeof LoginRoute
   '/teachers': typeof TeachersRoute
   '/dashboard/center': typeof DashboardCenterRoute
   '/dashboard/student': typeof DashboardStudentRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/centers': typeof CentersRoute
   '/checkout': typeof CheckoutRoute
+  '/login': typeof LoginRoute
   '/teachers': typeof TeachersRoute
   '/dashboard/center': typeof DashboardCenterRoute
   '/dashboard/student': typeof DashboardStudentRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/centers'
     | '/checkout'
+    | '/login'
     | '/teachers'
     | '/dashboard/center'
     | '/dashboard/student'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/centers'
     | '/checkout'
+    | '/login'
     | '/teachers'
     | '/dashboard/center'
     | '/dashboard/student'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/centers'
     | '/checkout'
+    | '/login'
     | '/teachers'
     | '/dashboard/center'
     | '/dashboard/student'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CentersRoute: typeof CentersRoute
   CheckoutRoute: typeof CheckoutRoute
+  LoginRoute: typeof LoginRoute
   TeachersRoute: typeof TeachersRoute
   DashboardCenterRoute: typeof DashboardCenterRoute
   DashboardStudentRoute: typeof DashboardStudentRoute
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/teachers'
       fullPath: '/teachers'
       preLoaderRoute: typeof TeachersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CentersRoute: CentersRoute,
   CheckoutRoute: CheckoutRoute,
+  LoginRoute: LoginRoute,
   TeachersRoute: TeachersRoute,
   DashboardCenterRoute: DashboardCenterRoute,
   DashboardStudentRoute: DashboardStudentRoute,

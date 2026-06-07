@@ -1,21 +1,27 @@
-import { Link } from "@tanstack/react-router";
-import { Languages, GraduationCap, Menu, X } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Languages, GraduationCap, Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
+import { useAuth, DASHBOARD_PATH } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const { t, lang, setLang } = useI18n();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const nav = [
     { to: "/", label: t("nav.home") },
     { to: "/teachers", label: t("nav.teachers") },
     { to: "/centers", label: t("nav.centers") },
-    { to: "/dashboard/teacher", label: t("nav.teacher_dash") },
-    { to: "/dashboard/center", label: t("nav.center_dash") },
-    { to: "/dashboard/student", label: t("nav.student_dash") },
   ];
+
+  const handleSignOut = () => {
+    signOut();
+    setOpen(false);
+    navigate({ to: "/login", replace: true });
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -52,9 +58,35 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <Languages className="size-4" />
               <span className="text-xs font-semibold">{lang === "ar" ? "EN" : "ع"}</span>
             </Button>
-            <Button asChild size="sm" className="hidden sm:inline-flex bg-foreground text-background hover:bg-foreground/90">
-              <Link to="/dashboard/student">{t("nav.signin")}</Link>
-            </Button>
+
+            {user ? (
+              <>
+                <Button asChild size="sm" variant="outline" className="hidden sm:inline-flex gap-1.5">
+                  <Link to={DASHBOARD_PATH[user.role]}>
+                    <LayoutDashboard className="size-4" />
+                    <span className="max-w-[120px] truncate">{user.name}</span>
+                  </Link>
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleSignOut}
+                  className="hidden sm:inline-flex gap-1.5"
+                  aria-label={lang === "ar" ? "تسجيل الخروج" : "Sign out"}
+                >
+                  <LogOut className="size-4" />
+                </Button>
+              </>
+            ) : (
+              <Button
+                asChild
+                size="sm"
+                className="hidden sm:inline-flex bg-foreground text-background hover:bg-foreground/90"
+              >
+                <Link to="/login">{t("nav.signin")}</Link>
+              </Button>
+            )}
+
             <button
               onClick={() => setOpen((v) => !v)}
               className="lg:hidden p-2 rounded-lg hover:bg-muted"
@@ -77,6 +109,33 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                   {n.label}
                 </Link>
               ))}
+              {user ? (
+                <>
+                  <Link
+                    to={DASHBOARD_PATH[user.role]}
+                    onClick={() => setOpen(false)}
+                    className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted flex items-center gap-2"
+                  >
+                    <LayoutDashboard className="size-4" />
+                    {lang === "ar" ? "لوحة التحكم" : "Dashboard"} · {user.name}
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="text-start px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted flex items-center gap-2 text-destructive"
+                  >
+                    <LogOut className="size-4" />
+                    {lang === "ar" ? "تسجيل الخروج" : "Sign out"}
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted"
+                >
+                  {t("nav.signin")}
+                </Link>
+              )}
             </div>
           </div>
         )}
@@ -98,7 +157,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           <FooterCol title={t("footer.product")} links={[
             { to: "/teachers", label: t("nav.teachers") },
             { to: "/centers", label: t("nav.centers") },
-            { to: "/dashboard/student", label: t("nav.student_dash") },
+            { to: "/login", label: t("nav.signin") },
           ]} />
           <FooterCol title={t("footer.company")} links={[
             { to: "/", label: t("footer.about") },

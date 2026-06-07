@@ -1,13 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarCheck, CheckCircle2, Wallet, BookOpen, ArrowRight } from "lucide-react";
 import { DashboardShell, KpiCard, Panel } from "@/components/DashboardShell";
+import { RoleGuard } from "@/components/RoleGuard";
 import { useI18n } from "@/lib/i18n";
 import { TEACHERS } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/dashboard/student")({
   head: () => ({ meta: [{ title: "Student Dashboard — Droosy" }] }),
-  component: StudentDash,
+  component: () => (
+    <RoleGuard role="student">
+      <StudentDash />
+    </RoleGuard>
+  ),
 });
 
 function StudentDash() {
