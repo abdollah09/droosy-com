@@ -33,13 +33,13 @@ export const SUBJECTS = [
 export const TEACHERS: Teacher[] = [
   {
     id: "t1",
-    name: { ar: "أ. أحمد الروضاني", en: "Mr. Ahmed El-Rodany" },
+    name: { ar: "د. عبدالله محمد", en: "Dr. Abdallah Mohamed" },
     subject: { ar: "رياضيات", en: "Math" },
     city: { ar: "القاهرة", en: "Cairo" },
     rating: 4.9,
     pricePerHour: 250,
     students: 124,
-    avatar: "AR",
+    avatar: "AM",
     tags: [{ ar: "ثانوية عامة", en: "Senior high" }, { ar: "أونلاين", en: "Online" }],
   },
   {
